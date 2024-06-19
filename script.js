@@ -1,21 +1,61 @@
+// Function to toggle the navigation menu
 function myMenuFunction() {
-    let menuBth = document.getElementById("myNavMenu");
+  let menuBth = document.getElementById("myNavMenu");
 
-    if (menuBth.className === "nav-menu") {
-        menuBth.className += "responsive";
-    } else {
-        menuBth.className = "nav-menu"
-    }
+  if (menuBth.classList.contains("responsive")) {
+      menuBth.classList.remove("responsive");
+  } else {
+      menuBth.classList.add("responsive");
+  }
 }
 
+// Close navigation menu when a link is clicked on mobile
+const navLinks = document.querySelectorAll('.nav-link');
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+          document.getElementById("myNavMenu").classList.remove("responsive");
+      }
+  });
+});
 
-// dark mode 
+// Function to update active link based on scroll position
+function updateActiveLink() {
+  const sections = document.querySelectorAll('section');
+  const scrollPosition = window.scrollY + window.innerHeight / 2;
 
+  let currentSectionId = '';
+
+  sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+
+      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          currentSectionId = section.getAttribute('id');
+      }
+  });
+
+  navLinks.forEach(link => {
+      if (link.getAttribute('href').substring(1) === currentSectionId) {
+          link.classList.add('active-link');
+      } else {
+          link.classList.remove('active-link');
+      }
+  });
+}
+
+// Listen for scroll events
+window.addEventListener('scroll', updateActiveLink);
+
+// Initial call to set the active link on page load
+updateActiveLink();
+
+// Dark mode toggle
 const body = document.querySelector("body"),
-toggleSwitch = document.getElementById("toggle-switch");
+  toggleSwitch = document.getElementById("toggle-switch");
 
-toggleSwitch.addEventListener("click", ()=> {
-    body.classList.toggle("dark");
+toggleSwitch.addEventListener("click", () => {
+  body.classList.toggle("dark");
 });
 
 // typing effect 
